@@ -13,21 +13,29 @@ module.exports = {
          * }], {});
          */
 
+        const doctorRoleId = await db.Role.findOne({ title: 'doctor' }).then(
+            (res) => res.id,
+        );
+
+        const patientRoleId = await db.Role.findOne({ title: 'patient' }).then(
+            (res) => res.id,
+        );
+
         const doctors = await db.User.findAll({
-            $where: {
-                role_id: db.Role.findOne({ $where: { title: 'doctor' } }).id,
+            where: {
+                role_id: doctorRoleId,
             },
         });
         const patients = await db.User.findAll({
-            $where: {
-                role_id: db.Role.findOne({ $where: { title: 'patient' } }).id,
+            where: {
+                role_id: patientRoleId,
             },
         });
 
         const appoitnments = patients.flatMap((patient) =>
             doctors.map((doctor) => ({
-                patientId: patient.id,
-                doctorId: doctor.id,
+                patient_id: patient.id,
+                doctor_id: doctor.id,
                 createdAt: new Date(),
                 updatedAt: new Date(),
                 reason: 'seed reason',

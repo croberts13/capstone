@@ -1,3 +1,5 @@
+const db = require('../models');
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
     async up(queryInterface, Sequelize) {
@@ -10,8 +12,14 @@ module.exports = {
          *   isBetaMember: false
          * }], {});
          */
-
-        const doctors = Array(5)
+        const doctorRoleId = await db.Role.findOne({ title: 'doctor' }).then(
+            (res) => res.id,
+        );
+        
+        const patientRoleId = await db.Role.findOne({ title: 'patient' }).then(
+            (res) => res.id,
+        );
+        const doctors = Array(15)
             .fill(null)
             .map((_, index) => ({
                 username: `doctor${index + 1}`,
@@ -19,11 +27,10 @@ module.exports = {
                 password: 'password',
                 createdAt: new Date(),
                 updatedAt: new Date(),
-                // roleId: db.Role.findOne({ title: 'doctor' }).id,
-                role_id: 1,
+                role_id: doctorRoleId,
             }));
 
-        const patients = Array(5)
+        const patients = Array(200)
             .fill(null)
             .map((_, index) => ({
                 username: `patient${index + 1}`,
@@ -31,8 +38,7 @@ module.exports = {
                 password: 'password',
                 createdAt: new Date(),
                 updatedAt: new Date(),
-                // roleId: db.Role.findOne({ title: 'patient' }).id,
-                role_id: 2,
+                role_id: patientRoleId,
             }));
 
         const users = [...doctors, ...patients];

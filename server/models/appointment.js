@@ -9,21 +9,34 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
+            this.belongsTo(models.User, { as: 'doctor', foreignKey: 'doctor_id' });
+            this.belongsTo(models.User, {
+                as: 'patient',
+                foreignKey: 'patient_id',
+            });
         }
     }
     Appointment.init(
         {
+            id: {
+                allowNull: false,
+                autoIncrement: true,
+                primaryKey: true,
+                type: DataTypes.INTEGER,
+            },
             title: DataTypes.STRING,
             date: DataTypes.DATE,
-            patientId: DataTypes.INTEGER,
-            doctorId: DataTypes.INTEGER,
+            patient_id: DataTypes.INTEGER,
+            doctor_id: DataTypes.INTEGER,
             reason: DataTypes.STRING,
             share: DataTypes.BOOLEAN,
         },
         {
             sequelize,
             modelName: 'Appointment',
-        }
+        },
     );
     return Appointment;
 };
+
+/** @typedef {ReturnType<module['exports']>} Appointment */

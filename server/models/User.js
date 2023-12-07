@@ -11,10 +11,17 @@ module.exports = (sequelize, DataTypes) => {
         static associate(models) {
             // define association here
             User.belongsTo(models.Role, { foreignKey: 'role_id' });
+            this.hasMany(models.Appointment, { foreignKey: 'user_id' });
         }
     }
     User.init(
         {
+            id: {
+                allowNull: false,
+                autoIncrement: true,
+                primaryKey: true,
+                type: DataTypes.INTEGER,
+            },
             username: DataTypes.STRING,
             email: DataTypes.STRING,
             phone: DataTypes.JSON,
@@ -39,3 +46,5 @@ module.exports = (sequelize, DataTypes) => {
 
     return User;
 };
+
+/** @typedef {ReturnType<module['exports']>} User */

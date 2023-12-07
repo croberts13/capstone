@@ -14,6 +14,12 @@ module.exports = (sequelize, DataTypes) => {
     }
     Role.init(
         {
+            id: {
+                allowNull: false,
+                autoIncrement: true,
+                primaryKey: true,
+                type: DataTypes.INTEGER,
+            },
             title: DataTypes.STRING,
             description: DataTypes.STRING,
         },
@@ -25,3 +31,5 @@ module.exports = (sequelize, DataTypes) => {
 
     return Role;
 };
+
+/** @typedef {ReturnType<module['exports']>} Role */

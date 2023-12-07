@@ -23,3 +23,5 @@ module.exports = (sequelize, DataTypes) => {
     );
     return UserRole;
 };
+
+/** @typedef {ReturnType<module['exports']>} UserRole */

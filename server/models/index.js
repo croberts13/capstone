@@ -55,4 +55,14 @@ sequelize
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
-module.exports = db;
+/**
+ *  @typedef  Models
+ * @prop Role {import('./role').Role}
+ * @prop User {import('./user').User}
+ * @prop UserRole {import('./user_role').UserRole}
+ * @prop Appointment {import('./appointment').Appointment}
+ * 
+ */
+
+
+module.exports = /** @type {Models & ( typeof db)} */ (db);

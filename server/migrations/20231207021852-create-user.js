@@ -22,6 +22,7 @@ module.exports = {
                 type: Sequelize.JSON,
             },
             password: Sequelize.STRING,
+            role_id: Sequelize.INTEGER,
             createdAt: {
                 allowNull: false,
                 type: Sequelize.DATE,

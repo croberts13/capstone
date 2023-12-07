@@ -15,9 +15,8 @@ module.exports = {
             date: {
                 type: Sequelize.DATE,
             },
-            participants: {
-                type: Sequelize.JSON,
-            },
+            patient_id: Sequelize.INTEGER,
+            doctor_id: Sequelize.INTEGER,
             reason: {
                 type: Sequelize.STRING,
             },
