@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Appointments(props) {
+function Profile(props) {
     return (
         <div>
             
@@ -8,4 +8,4 @@ function Appointments(props) {
     );
 }
 
-export default Appointments;
+export default Profile;

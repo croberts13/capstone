@@ -1,0 +1,16 @@
+require('dotenv').config();
+const path = require('path');
+const db_url = `${process.env.DB_PROTOCOL ?? 'postgresql'}://${
+    process.env.DB_USER
+}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${
+    process.env.DB_NAME
+}`;
+console.log(db_url);
+
+module.exports = {
+    config: path.resolve('config', 'config.js'),
+    'models-path': path.resolve('models'),
+    'seeders-path': path.resolve('seeders'),
+    'migrations-path': path.resolve('migrations'),
+    url: db_url,
+};

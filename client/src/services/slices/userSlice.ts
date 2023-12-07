@@ -15,7 +15,6 @@ const userSlice = createSlice({
     setUser(state, action) {
       state.user = action.payload;
     },
-
     login(state, action) {
       state.user = action.payload.user;
     },

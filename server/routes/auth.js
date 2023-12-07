@@ -4,8 +4,7 @@ const jwt = require('jsonwebtoken');
 
 const router = express.Router();
 
-/* GET users listing. */
-router.get('/', (req, res, next) => {
+router.get('', (req, res) => {
     res.send('respond with a resource');
 });
 
@@ -36,7 +35,7 @@ router.post('/register', async (req, res, next) => {
             'your_secret_key',
             {
                 expiresIn: '1h',
-            },
+            }
         );
 
         // Set the token as a session cookie
@@ -68,15 +67,11 @@ router.post('/login', async (req, res, next) => {
 
         res.status(200).json({ message: 'Login successful' });
     } catch (error) {
-        res.status(500).json({ message: 'Internal server error' });
+        res.status(500).json({ message: 'Internal server error', error: error.message });
     }
 });
 
 router.post('/logout', (req, res, next) => {
-    res.send('respond with a resource');
-});
-
-router.get('/users', (req, res, next) => {
     res.send('respond with a resource');
 });
 
