@@ -4,5 +4,6 @@ module.exports = {
     extends: ['eslint-config-mfe/eslintrc.es6.js'],
     rules: {
         camelcase: 'off',
+        "arrow-parren": "asNeeded"
     },
 };
