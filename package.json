@@ -8,8 +8,11 @@
     "dev:client": "npm --prefix client run dev",
     "dev:server": "npm --prefix server run dev",
     "dev": "npx concurrently \"npm run dev:client\" \"npm run dev:server\"",
+    "build:client": "cd client && npx vite build",
     "dprecommit": "lint-staged",
-    "lint-fix": "npx eslint --fix server client"
+    "lint-fix": "npx eslint --fix server client",
+    "postinstall": "npm run build:client",
+    "start": "npm --prefix server  start"
   },
   "workspaces": [
     "client",
