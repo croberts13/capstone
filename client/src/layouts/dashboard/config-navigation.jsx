@@ -28,7 +28,7 @@ const navConfig = [
     icon: icon('ic_blog'),
   },
   {
-    //appointments config
+    // appointments config
     title: 'appointments',
     path: '/appointments',
     icon: icon('ic_list'),
