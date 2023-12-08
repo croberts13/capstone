@@ -21,6 +21,7 @@ const config = {
         database: process.env.DB_NAME || 'database_production',
         host: '127.0.0.1',
         dialect: 'postgres',
+        use_env_variable: 'DATABASE_URL',
     },
 };
 
