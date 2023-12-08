@@ -15,9 +15,12 @@ Backend: springboot/pgsql
 - Personas: Doctors, patients, timeBlocks
 
 Todos
-- fix sequelize connection,
-- fix auth register/login
-- fixing client navigation
-- atempt basic seeder
-- add models for patiets, appointments
-- add move client views
+- [x] fix sequelize connection,
+- [-x] fix auth register/login
+- [x] fixing client navigation
+- [x] atempt basic seeder
+- [x] add models for patiets, appointments
+- [x] add move client views
+- [] store logged in user in rtk
+- [] show profile page/component and populate with profile info
+- [] get logged in user appointments
