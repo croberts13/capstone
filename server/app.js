@@ -7,7 +7,6 @@ const logger = require('morgan');
 const cors = require('cors');
 
 const indexRouter = require('./routes/index');
-const usersRouter = require('./routes/users');
 
 const app = express();
 
@@ -25,7 +24,32 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/api/auth', require('./routes/auth'));
-app.use('/users', usersRouter);
+app.use('/users', require('./routes/users'));
+app.use('/api/appointments', require('./routes/appointments'));
+app.use('/api/doctors', require('./routes/doctors'));
+app.use('/api/patients', require('./routes/patients'));
+
+// import { initTRPC } from '@trpc/server';
+// import * as trpcExpress from '@trpc/server/adapters/express';
+
+const { initTRPC } = require('@trpc/server');
+const trpcExpress = require('@trpc/server/adapters/express');
+
+// created for each request
+const createContext = (
+    /** @type {trpcExpress.CreateExpressContextOptions}*/ { req, res }
+) => ({}); // no context
+//   type Context = Awaited<ReturnType<typeof createContext>>;
+/** @typedef {Awaited<ReturnType<typeof createContext>>} Context */
+const { appRouter } = require('./trpc/router.cjs');
+
+app.use(
+    '/trpc',
+    trpcExpress.createExpressMiddleware({
+        router: appRouter,
+        createContext
+    })
+);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
@@ -38,6 +62,7 @@ app.use((err, req, res, next) => {
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};
 
+    console.error(err.stack);
     // render the error page
     res.status(err.status || 500);
     res.render('error');

@@ -24,18 +24,18 @@ module.exports = {
             .map((_, index) => ({
                 username: `doctor${index + 1}`,
                 email: `doctor${index + 1}@pointsync.com`,
-                password: 'password',
+                password: db.User.hashSync('password'),
                 createdAt: new Date(),
                 updatedAt: new Date(),
                 role_id: doctorRoleId,
             }));
 
-        const patients = Array(200)
+        const patients = Array(100)
             .fill(null)
             .map((_, index) => ({
                 username: `patient${index + 1}`,
                 email: `patient${index + 1}@pointsync.com`,
-                password: 'password',
+                password: db.User.hashSync('password'),
                 createdAt: new Date(),
                 updatedAt: new Date(),
                 role_id: patientRoleId,

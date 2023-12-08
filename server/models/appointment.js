@@ -9,10 +9,14 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             // define association here
-            this.belongsTo(models.User, { as: 'doctor', foreignKey: 'doctor_id' });
+            this.belongsTo(models.User, {
+                as: 'doctor',
+                foreignKey: 'doctor_id'
+            });
+
             this.belongsTo(models.User, {
                 as: 'patient',
-                foreignKey: 'patient_id',
+                foreignKey: 'patient_id'
             });
         }
     }
@@ -22,19 +26,19 @@ module.exports = (sequelize, DataTypes) => {
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
-                type: DataTypes.INTEGER,
+                type: DataTypes.INTEGER
             },
             title: DataTypes.STRING,
             date: DataTypes.DATE,
             patient_id: DataTypes.INTEGER,
             doctor_id: DataTypes.INTEGER,
             reason: DataTypes.STRING,
-            share: DataTypes.BOOLEAN,
+            share: DataTypes.BOOLEAN
         },
         {
             sequelize,
-            modelName: 'Appointment',
-        },
+            modelName: 'Appointment'
+        }
     );
     return Appointment;
 };

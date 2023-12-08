@@ -42,15 +42,20 @@ Object.keys(db).forEach((modelName) => {
     if (db[modelName].associate) {
         db[modelName].associate(db);
     }
+
+    if (db[modelName].attachScope) {
+      db[modelName].attachScope(db);
+    }
 });
 
-sequelize
-    .authenticate()
-    .then(() => console.log('Connection has been established successfully.'))
-    .catch((/** @type {Error}*/ err) => {
-        console.error(err);
-        console.log('Unable to connect to the database: ' + err.stack);
-    });
+// sequelize
+//     .authenticate()
+//     .then(() => console.log('Connection has been established successfully.'))
+//     .catch((/** @type {Error}*/ err) => {
+//         console.error(err);
+//         console.log('Unable to connect to the database: ' + err.stack);
+//     });
+
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
@@ -61,8 +66,11 @@ db.Sequelize = Sequelize;
  * @prop User {import('./user').User}
  * @prop UserRole {import('./user_role').UserRole}
  * @prop Appointment {import('./appointment').Appointment}
+ *
  * 
+ * @typedef {Models & ( typeof db)} DBInstance
+ *  
  */
 
 
-module.exports = /** @type {Models & ( typeof db)} */ (db);
+module.exports = /** @type {DBInstance} */ (db);

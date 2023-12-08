@@ -35,6 +35,7 @@ module.exports = {
         const appoitnments = patients.flatMap((patient) =>
             doctors.map((doctor) => ({
                 patient_id: patient.id,
+                title: 'test appointment'+`${patient.email} - ${doctor.email}`,
                 doctor_id: doctor.id,
                 createdAt: new Date(),
                 updatedAt: new Date(),

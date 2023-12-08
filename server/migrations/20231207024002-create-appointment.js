@@ -7,33 +7,35 @@ module.exports = {
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
-                type: Sequelize.INTEGER,
+                type: Sequelize.INTEGER
             },
             title: {
-                type: Sequelize.STRING,
+                type: Sequelize.STRING
             },
             date: {
-                type: Sequelize.DATE,
+                type: Sequelize.DATE
             },
             patient_id: Sequelize.INTEGER,
             doctor_id: Sequelize.INTEGER,
             reason: {
-                type: Sequelize.STRING,
+                type: Sequelize.STRING
             },
             share: {
                 type: Sequelize.BOOLEAN,
+                defaultValue: false
             },
             createdAt: {
                 allowNull: false,
                 type: Sequelize.DATE,
+                defaultValue: Sequelize.NOW
             },
             updatedAt: {
                 allowNull: false,
-                type: Sequelize.DATE,
-            },
+                type: Sequelize.DATE
+            }
         });
     },
     async down(queryInterface, Sequelize) {
         await queryInterface.dropTable('Appointments');
-    },
+    }
 };
