@@ -13,7 +13,15 @@ module.exports = {
                 type: Sequelize.STRING
             },
             date: {
-                type: Sequelize.DATE
+                type: Sequelize.DATEONLY
+            },
+            hour_slot: {
+                type: Sequelize.INTEGER,
+                // validate that value is betwee 8 and 17
+                validate: {
+                    min: 8,
+                    max: 17
+                }
             },
             patient_id: Sequelize.INTEGER,
             doctor_id: Sequelize.INTEGER,

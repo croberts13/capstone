@@ -25,6 +25,15 @@ module.exports = (sequelize, DataTypes) => {
         static attachScope(
             /** @type {import('../models').DBInstance} */ models
         ) {
+            // scope withRole
+            this.addScope('withRole', {
+                include: [
+                    {
+                        model: models.Role
+                    }
+                ]
+            });
+
             this.addScope('doctor', {
                 include: [
                     {
@@ -76,7 +85,7 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.STRING,
                 allowNull: false,
                 set: (password) =>
-                    User.hashSync(password, Math.random(10_000_000_000)),
+                    User.hashSync(password, Math.random(10_000_000_000))
                 // hidden: true
             }
         },

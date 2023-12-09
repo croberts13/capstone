@@ -14,34 +14,43 @@ module.exports = {
          */
 
         const doctorRoleId = await db.Role.findOne({ title: 'doctor' }).then(
-            (res) => res.id,
+            (res) => res.id
         );
 
         const patientRoleId = await db.Role.findOne({ title: 'patient' }).then(
-            (res) => res.id,
+            (res) => res.id
         );
 
         const doctors = await db.User.findAll({
             where: {
-                role_id: doctorRoleId,
+                role_id: doctorRoleId
             },
+            limit: 5,
+            order: [['id', 'ASC']]
         });
         const patients = await db.User.findAll({
             where: {
-                role_id: patientRoleId,
-            },
+                role_id: patientRoleId
+            }
         });
 
-        const appoitnments = patients.flatMap((patient) =>
-            doctors.map((doctor) => ({
-                patient_id: patient.id,
-                title: 'test appointment'+`${patient.email} - ${doctor.email}`,
-                doctor_id: doctor.id,
-                createdAt: new Date(),
-                updatedAt: new Date(),
-                reason: 'seed reason',
-            })),
-        );
+        const appoitnments = patients
+            .flatMap((patient) =>
+                doctors.map((doctor) => ({
+                    patient_id: patient.id,
+                    title:
+                        'test appointment' +
+                        `${patient.email} - ${doctor.email}`,
+                    doctor_id: doctor.id,
+                    createdAt: new Date(),
+                    updatedAt: new Date(),
+                    reason: 'seed reason',
+                    date: new Date()
+                }))
+            )
+            .flatMap((apt) =>
+                [8, 12, 17].map((hour_slot) => ({ ...apt, hour_slot }))
+            );
 
         await queryInterface.bulkInsert('Appointments', appoitnments);
     },
@@ -55,5 +64,5 @@ module.exports = {
          */
 
         await queryInterface.bulkDelete('Appointments', null, {});
-    },
+    }
 };

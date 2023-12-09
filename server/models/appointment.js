@@ -29,17 +29,26 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.INTEGER
             },
             title: DataTypes.STRING,
-            date: DataTypes.DATE,
+            date: DataTypes.DATEONLY,
             patient_id: DataTypes.INTEGER,
             doctor_id: DataTypes.INTEGER,
             reason: DataTypes.STRING,
-            share: DataTypes.BOOLEAN
+            share: DataTypes.BOOLEAN,
+            hour_slot: {
+                type: DataTypes.INTEGER,
+                // validate that value is betwee 8 and 17
+                validate: {
+                    min: 8,
+                    max: 17
+                }
+            }
         },
         {
             sequelize,
             modelName: 'Appointment'
         }
     );
+
     return Appointment;
 };
 
