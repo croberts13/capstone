@@ -13,10 +13,11 @@ let sequelize;
 if (config.use_env_variable) {
     sequelize = new Sequelize(process.env[config.use_env_variable], {
         ...config,
+        ssl: true,
         dialectOptions: {
             ssl: {
                 require: true, // Set to true if SSL is required
-                rejectUnauthorized: false // Set to false if you want to skip validation of SSL certificates
+                // rejectUnauthorized: false // Set to false if you want to skip validation of SSL certificates
                 // You can also provide other SSL options here as needed
             }
         }
@@ -28,10 +29,11 @@ if (config.use_env_variable) {
         process.env.DB_PASSWORD || config.password,
         {
             ...config,
+            ssl: true,
             dialectOptions: {
                 ssl: {
                     require: true, // Set to true if SSL is required
-                    rejectUnauthorized: false // Set to false if you want to skip validation of SSL certificates
+                    // rejectUnauthorized: false // Set to false if you want to skip validation of SSL certificates
                     // You can also provide other SSL options here as needed
                 }
             }
