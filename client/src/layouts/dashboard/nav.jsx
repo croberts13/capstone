@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import Box from '@mui/material/Box';
@@ -22,6 +22,8 @@ import Scrollbar from 'src/components/scrollbar';
 
 import { NAV } from './config-layout';
 import navConfig from './config-navigation';
+import { trpc } from 'src/hooks/trpc';
+import { useAuth } from 'src/store/slices/authSlice';
 
 // ----------------------------------------------------------------------
 
@@ -30,12 +32,26 @@ export default function Nav({ openNav, onCloseNav }) {
 
   const upLg = useResponsive('up', 'lg');
 
+  const [trigger, setTrigger] = useState(false);
+  const { user } = useAuth();
+  const me = user;
+
   useEffect(() => {
     if (openNav) {
       onCloseNav();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
+
+  console.log({ me });
+  if (me) {
+    account.displayName = me?.username;
+  }
+
+  const triggerMeQuery = () => {
+    setTrigger(Math.random(100000));
+    console.log('triggerMeQuery.fired');
+  };
 
   const renderAccount = (
     <Box
@@ -53,7 +69,9 @@ export default function Nav({ openNav, onCloseNav }) {
       <Avatar src={account.photoURL} alt="photoURL" />
 
       <Box sx={{ ml: 2 }}>
-        <Typography variant="subtitle2">{account.displayName}</Typography>
+        <Typography variant="subtitle2" onClick={triggerMeQuery}>
+          {account.displayName}
+        </Typography>
 
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
           {account.role}

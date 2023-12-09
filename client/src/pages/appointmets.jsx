@@ -2,12 +2,15 @@ import { Helmet } from 'react-helmet-async';
 import { trpc } from 'src/hooks/trpc';
 
 import { UserView } from 'src/sections/user/view';
+import { useAuth } from 'src/store/slices/authSlice';
 
 // ----------------------------------------------------------------------
 
 export default function Appointments() {
   //get appointments  with trpc
-  const appointments = trpc.appointments.getAppointments.useQuery();
+  const { user } = useAuth();
+
+  const appointments = trpc.user.getAppointments.useQuery();
 
   return (
     <>
@@ -21,6 +24,7 @@ export default function Appointments() {
             <th>no</th>
             <th>title</th>
             <th>date</th>
+            <th>hour_slot</th>
             <th>reason</th>
             <th>doctor</th>
             <th>patient</th>
@@ -34,9 +38,10 @@ export default function Appointments() {
               <td>{index + 1}</td>
               <td>{appointment.title}</td>
               <td>{appointment.date}</td>
+              <td>{appointment.hour_slot}</td>
               <td>{appointment.reason}</td>
-              <td>{appointment.doctor}</td>
-              <td>{appointment.patient}</td>
+              <td>{appointment.doctor?.username ?? 'no-doc'}</td>
+              <td>{appointment.patient?.username ?? 'no-patient'}</td>
             </tr>
           ))}
         </tbody>

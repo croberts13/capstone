@@ -10,6 +10,7 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 
 import { account } from 'src/_mock/account';
+import { useAuth } from 'src/store/slices/authSlice';
 
 // ----------------------------------------------------------------------
 
@@ -32,6 +33,7 @@ const MENU_OPTIONS = [
 
 export default function AccountPopover() {
   const [open, setOpen] = useState(null);
+  const auth = useAuth();
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
@@ -39,6 +41,11 @@ export default function AccountPopover() {
 
   const handleClose = () => {
     setOpen(null);
+  };
+
+  const doLogout = () => {
+    auth.logout();
+    handleClose();
   };
 
   return (
@@ -105,7 +112,7 @@ export default function AccountPopover() {
         <MenuItem
           disableRipple
           disableTouchRipple
-          onClick={handleClose}
+          onClick={doLogout}
           sx={{ typography: 'body2', color: 'error.main', py: 1.5 }}
         >
           Logout

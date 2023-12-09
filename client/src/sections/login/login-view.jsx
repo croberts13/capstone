@@ -21,6 +21,7 @@ import { bgGradient } from 'src/theme/css';
 
 import Logo from 'src/components/logo';
 import Iconify from 'src/components/iconify';
+import { useAuth } from 'src/store/slices/authSlice';
 
 // ----------------------------------------------------------------------
 
@@ -31,7 +32,7 @@ export default function LoginView() {
   // const login = trpc.auth.login.useQuery({});
 
   const router = useRouter();
-
+  const auth = useAuth();
   const [showPassword, setShowPassword] = useState(false);
 
   const handleClick = (e) => {
@@ -43,6 +44,7 @@ export default function LoginView() {
     };
 
     loginMutation.mutateAsync(data).then((res) => {
+      auth.login(res);
       router.push('/');
     });
 

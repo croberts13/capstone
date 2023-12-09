@@ -9,25 +9,34 @@ import { useScrollToTop } from 'src/hooks/use-scroll-to-top';
 import Router from 'src/routes/sections';
 import ThemeProvider from 'src/theme';
 import { trpc } from './hooks/trpc';
+import { Provider } from 'react-redux';
+import store from 'src/store';
+import { useAuth } from './store/slices/authSlice';
 
 // ----------------------------------------------------------------------
 
-export default function App() {
+function Root() {
+  const { token } = useAuth();
+
+  const autorizationHeader = () => (!token ? {} : { authorization: `Bearer ${token ?? ''}` });
   const [queryClient] = useState(() => new QueryClient());
-  const [trpcClient] = useState(() =>
-    trpc.createClient({
-      links: [
-        httpBatchLink({
-          url: 'http://localhost:3000/trpc',
-          // You can pass any HTTP headers you wish here
-          async headers() {
-            return {
-              // authorization: getAuthCookie(),
-            };
-          },
-        }),
-      ],
-    })
+  const [trpcClient] = useState(
+    () =>
+      trpc.createClient({
+        links: [
+          httpBatchLink({
+            url: 'http://localhost:3000/trpc',
+            // You can pass any HTTP headers you wish here
+            async headers() {
+              return {
+                // authorization: getAuthCookie(),
+                ...autorizationHeader(),
+              };
+            },
+          }),
+        ],
+      }),
+    [autorizationHeader]
   );
   useScrollToTop();
 
@@ -40,5 +49,13 @@ export default function App() {
         </QueryClientProvider>
       </trpc.Provider>
     </ThemeProvider>
+  );
+}
+
+export default function App() {
+  return (
+    <Provider store={store}>
+      <Root />
+    </Provider>
   );
 }
