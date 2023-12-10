@@ -11,6 +11,7 @@ export default function Appointments() {
   const { user } = useAuth();
 
   const appointments = trpc.user.getAppointments.useQuery();
+  // const availableAppointments = trpc.user.getAvailableAppointments.useQuery();
 
   return (
     <>

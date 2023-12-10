@@ -18,7 +18,10 @@ import { useAuth } from './store/slices/authSlice';
 function Root() {
   const { token } = useAuth();
 
-  const autorizationHeader = () => (!token ? {} : { authorization: `Bearer ${token ?? ''}` });
+  const getAuthHeader = () => {
+    console.log('App.applying autthorization header');
+    return !token ? {} : { authorization: `Bearer ${token ?? ''}` };
+  };
   const [queryClient] = useState(() => new QueryClient());
   const [trpcClient] = useState(
     () =>
@@ -30,13 +33,13 @@ function Root() {
             async headers() {
               return {
                 // authorization: getAuthCookie(),
-                ...autorizationHeader(),
+                ...getAuthHeader(),
               };
             },
           }),
         ],
       }),
-    [autorizationHeader]
+    [getAuthHeader]
   );
   useScrollToTop();
 
