@@ -24,5 +24,7 @@ Todos
 - [x] store logged in user in rtk
 - [x] show profile page/component and populate with profile info
 - [x] get logged in user appointments
-- [] get open appoitnments
--
+- [x] get open appoitnments
+- [x] create/delete appointments
+- [] update appoitnments
+- [] fix client jwt refreshing with queryclient
