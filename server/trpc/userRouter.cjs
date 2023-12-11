@@ -13,6 +13,14 @@ const userRouter = t.router({
                 }
             ]
         });
+    }),
+    getDoctors: t.procedure.use(isAuthed).query(async (otps) => {
+        //return users with doctor scope
+        return await db.User.scope('doctor').findAll();
+    }),
+    getPatients: t.procedure.use(isAuthed).query(async (otps) => {
+        // return users with patient scope
+        return await db.User.scope('patient').findAll();
     })
 });
 exports.userRouter = userRouter;

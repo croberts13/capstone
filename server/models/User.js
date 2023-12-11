@@ -40,7 +40,8 @@ module.exports = (sequelize, DataTypes) => {
                         model: models.Role,
                         where: {
                             title: 'doctor'
-                        }
+                        },
+                        required: true
                     }
                 ]
             });
@@ -51,7 +52,8 @@ module.exports = (sequelize, DataTypes) => {
                         model: models.Role,
                         where: {
                             title: 'patient'
-                        }
+                        },
+                        required: true
                     }
                 ]
             });

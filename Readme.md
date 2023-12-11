@@ -21,6 +21,8 @@ Todos
 - [x] atempt basic seeder
 - [x] add models for patiets, appointments
 - [x] add move client views
-- [] store logged in user in rtk
-- [] show profile page/component and populate with profile info
-- [] get logged in user appointments
+- [x] store logged in user in rtk
+- [x] show profile page/component and populate with profile info
+- [x] get logged in user appointments
+- [] get open appoitnments
+-

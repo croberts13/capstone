@@ -12,17 +12,40 @@ import { trpc } from './hooks/trpc';
 import { Provider } from 'react-redux';
 import store from 'src/store';
 import { useAuth } from './store/slices/authSlice';
+import { Snackbar } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
 function Root() {
-  const { token } = useAuth();
+  const { token, _refreshToken } = useAuth();
+  const [snackOpenMsg, setSnackOpenMsg] = useState(false);
 
   const getAuthHeader = () => {
-    console.log('App.applying autthorization header');
-    return !token ? {} : { authorization: `Bearer ${token ?? ''}` };
+    const result = !token
+      ? {}
+      : { authorization: `Bearer ${token ?? ''}`, refreshToken: _refreshToken };
+    console.log('App.applying authorization header', token, result);
+    return result;
   };
-  const [queryClient] = useState(() => new QueryClient());
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          mutations: {
+            onError: (error) => {
+              console.log(error);
+              setSnackOpenMsg(JSON.stringify(error, null, 4));
+            },
+            queries: {
+              onError: (error) => {
+                console.log(error);
+                setSnackOpenMsg(JSON.stringify(error, null, 4));
+              },
+            },
+          },
+        },
+      })
+  );
   const [trpcClient] = useState(
     () =>
       trpc.createClient({
@@ -49,6 +72,13 @@ function Root() {
         <QueryClientProvider client={queryClient}>
           {/* Your app here */}
           <Router />
+          <Snackbar
+            open={Boolean(snackOpenMsg)}
+            onClose={() => setSnackOpenMsg(false)}
+            autoHideDuration={6000}
+          >
+            {snackOpenMsg ?? ''}
+          </Snackbar>
         </QueryClientProvider>
       </trpc.Provider>
     </ThemeProvider>

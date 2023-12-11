@@ -3,6 +3,7 @@ import { Outlet, Navigate, useRoutes } from 'react-router-dom';
 
 import Appointments from 'src/pages/appointmets';
 import DashboardLayout from 'src/layouts/dashboard';
+import { AddAppointments } from '../pages/AddAppointments';
 
 export const IndexPage = lazy(() => import('src/pages/app'));
 export const BlogPage = lazy(() => import('src/pages/blog'));
@@ -10,8 +11,6 @@ export const UserPage = lazy(() => import('src/pages/user'));
 export const LoginPage = lazy(() => import('src/pages/login'));
 export const ProductsPage = lazy(() => import('src/pages/products'));
 export const Page404 = lazy(() => import('src/pages/page-not-found'));
-
-// ----------------------------------------------------------------------
 
 export default function Router() {
   const routes = useRoutes([
@@ -30,7 +29,7 @@ export default function Router() {
         { path: 'blog', element: <BlogPage /> },
         // appointments page
         { path: 'appointments', element: <Appointments /> },
-        
+        { path: 'appointments/add', element: <AddAppointments /> },
       ],
     },
     {

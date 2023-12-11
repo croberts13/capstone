@@ -16,7 +16,7 @@ export default function Appointments() {
   return (
     <>
       <Helmet>
-        <title> User | Minimal UI </title>
+        <title> Appointments </title>
       </Helmet>
 
       <table>

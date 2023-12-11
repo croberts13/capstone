@@ -7,7 +7,7 @@ const { userRouter } = require('./userRouter.cjs');
 const appRouter = t.router({
     appointments: appointmentRouter,
     auth: authRouter,
-    user: userRouter
+    user: userRouter,
 });
 
 module.exports = {

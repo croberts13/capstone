@@ -4,21 +4,31 @@ const { router, t } = require('./router.cjs');
 const { isAuthed } = require('./isAuthed.cjs');
 const { Sequelize, Op } = require('sequelize');
 
+const zNewAppointment = {
+    title: z.string(),
+    reason: z.string(),
+    date: z.string(),
+    doctor_id: z.number(),
+    patient_id: z.number(),
+    share: z.boolean().optional().default(false),
+    hour_slot: z.number().or(z.number())
+};
+
 const appointmentRouter = router({
     createAppointment: t.procedure
-        .input(
-            z.object({
-                title: z.string(),
-                reason: z.string(),
-                date: z.date(),
-                doctor_id: z.number(),
-                patient_id: z.number(),
-                share: z.boolean().optional().default(false)
-            })
-        )
-        .mutation((opts) => {
+        .input(z.object(zNewAppointment))
+        .mutation(async (opts) => {
             const { input } = opts;
-            db.Appointment.create(input);
+            return await db.Appointment.create(input);
+        }),
+
+    updateAppointment: t.procedure
+        .input(z.object({ ...zNewAppointment, id: z.number().or(z.string()) }))
+        .mutation(async (opts) => {
+            // update the appoitnment that matches the id
+            return await db.Appointment.update(opts.input, {
+                where: { id: opts.input.id }
+            });
         }),
     getAppointments: t.procedure
         .input(z.number().optional())
@@ -38,36 +48,54 @@ const appointmentRouter = router({
     }),
     getOpenHourSlots: t.procedure
         .use(isAuthed)
-        .input(z.array(z.date()))
+        .input(z.array(z.string()))
         .query(async ({ ctx, input }) => {
             // get scheduled appointments for given dates
             const filledSlots = await db.Appointment.findAll({
                 where: {
                     date: {
                         [Op.in]: input
-                    }
+                    },
+                    [ctx.user.Role.title + '_id']: ctx.user.id
                 }
             });
             const defaultSlots = Array(8)
                 .fill(null)
-                .map((_, index) => 8 + index); //8hrs to 17hrs
+                .map((_, index) => 9 + index); //8hrs to 17hrs
 
             const openHourSlots = input.map((day) => {
-                const _openHourSlots = defaultSlots.filter(
+                const _openHourSlots = defaultSlots.map(
                     (openHourSlot) =>
-                        !filledSlots.some(
-                            (fSlot) =>
-                                fSlot.date == day &&
-                                fSlot.hour_slot == openHourSlot
+                        /**@type {db['Appointment']} */
+                        (
+                            filledSlots.find(
+                                (fSlot) =>
+                                    fSlot.date == day &&
+                                    fSlot.hour_slot == openHourSlot
+                            ) ?? { date: day, hour_slot: openHourSlot }
                         )
                 );
-                return _openHourSlots.map((openHourSlot) => ({
-                    openHourSlot,
-                    day
-                }));
+
+                // return _openHourSlots.map((openHourSlot) => ({
+                //     ...openHourSlot,
+                //     date: day
+                // }));
+                return _openHourSlots;
             });
 
-            return openHourSlots;
+            return openHourSlots.flatMap((slotGroupts) => slotGroupts);
+        }),
+    deleteAppointment: t.procedure
+        .use(isAuthed)
+        .input(z.number())
+        .mutation(async ({ input, ctx }) => {
+            // delete appointments with the id=input and ctx.user.Role.title+'_id == ctx.user.id
+            return await db.Appointment.destroy({
+                where: {
+                    [ctx.user.Role.title + '_id']: ctx.user.id,
+                    id: input
+                }
+            });
         })
 });
 exports.appointmentRouter = appointmentRouter;

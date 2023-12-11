@@ -34,6 +34,12 @@ const navConfig = [
     icon: icon('ic_list'),
   },
   {
+    // appointments config
+    title: 'add appointment',
+    path: '/appointments/add',
+    icon: icon('ic_list'),
+  },
+  {
     title: 'login',
     path: '/login',
     icon: icon('ic_lock'),

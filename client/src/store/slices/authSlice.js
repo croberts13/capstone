@@ -2,12 +2,12 @@ import { createSlice } from '@reduxjs/toolkit';
 import { useDispatch, useSelector } from 'react-redux';
 
 /**
- * @type {Awaited<ReturnType<import('src/hooks/trpc')['trpc']['auth']['login']['useMutation']>['mutate']>}
+ * @satisfies {Awaited<ReturnType<import('src/hooks/trpc')['trpc']['auth']['login']['useMutation']>['mutate']>}
  * */
 const initialState = {
-  token: JSON.parse(localStorage.getItem('token')),
-  refreshToken: JSON.parse(localStorage.getItem('refreshToken')),
-  user: JSON.parse(localStorage.getItem('user')),
+  token: JSON.parse(localStorage.getItem('authState'))?.token,
+  _refreshToken: JSON.parse(localStorage.getItem('authState'))?._refreshToken,
+  user: JSON.parse(localStorage.getItem('authState'))?.user,
 };
 
 const authSlice = createSlice({
@@ -15,17 +15,25 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     setToken: (state, action) => {
-      localStorage.setItem('token', action.payload);
       state.token = action.payload;
+      localStorage.setItem('authState', JSON.stringify(state));
       console.log('authSlice.change.fired', state);
     },
     setRefreshToken: (state, action) => {
-      localStorage.setItem('refreshToken', action.payload);
-      state.refreshToken = action.payload;
+      state._refreshToken = action.payload;
+      localStorage.setItem('authState', JSON.stringify(state));
       console.log('authSlice.change.fired', state);
     },
     setUser: (state, action) => {
       state.user = action.payload;
+      localStorage.setItem('authState', JSON.stringify(state));
+      console.log('authSlice.change.fired', state);
+    },
+    logout: (state, action) => {
+      state.token = null;
+      state._refreshToken = null;
+      state.user = null;
+      localStorage.removeItem('authState');
       console.log('authSlice.change.fired', state);
     },
   },
@@ -50,9 +58,7 @@ export const useAuth = () => {
   };
 
   const logout = () => {
-    dispatch(AuthActions.setToken(null));
-    dispatch(AuthActions.setRefreshToken(null));
-    dispatch(AuthActions.setUser(null));
+    dispatch(AuthActions.logout());
   };
   const refreshToken = (token) => {
     dispatch(AuthActions.setToken(token));
