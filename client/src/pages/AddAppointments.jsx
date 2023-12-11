@@ -172,11 +172,22 @@ export const AddAppointments = () => {
                           loadSlotDetails({ slot: slots?.length ? slots[0] : null, hour, date })
                         }
                       >
-                        <Stack direction="column">
+                        <Stack
+                          direction="column"
+                          sx={{
+                            textAlign: 'start',
+                            width: '10ch',
+                            overflow: 'hidden',
+                            whiteSpace: 'nowrap',
+                            textOverflow: 'ellipsis',
+                          }}
+                        >
                           {slots?.length && slots[0]?.patient_id ? (
                             <>
-                              <span>Doctor: {slots?.length && slots[0]?.doctor_id}</span>
-                              <span>Patient_id: {slots?.length && slots[0]?.patient_id}</span>
+                              <span>{slots?.at(0)?.title}</span>
+                              <span> {slots?.length && slots[0]?.patient?.username}</span>
+                              <span> {slots?.length && slots[0]?.doctor?.username}</span>
+                              <span>Counts: {slots?.length}</span>
                             </>
                           ) : (
                             <span>open</span>
@@ -288,8 +299,6 @@ export const AddAppointments = () => {
                   rows={4}
                 />
               </Stack>
-
-              {JSON.stringify(slotDialogData.slot, null, 4)}
             </DialogContent>
 
             <DialogActions>

@@ -57,7 +57,8 @@ const appointmentRouter = router({
                         [Op.in]: input
                     },
                     [ctx.user.Role.title + '_id']: ctx.user.id
-                }
+                },
+                include: ['doctor', 'patient']
             });
             const defaultSlots = Array(8)
                 .fill(null)
