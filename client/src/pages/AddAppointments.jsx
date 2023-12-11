@@ -233,7 +233,10 @@ export const AddAppointments = () => {
                 <FormControl sx={{ width: '100%' }}>
                   <Autocomplete
                     options={doctors}
-                    defaultValue={slotDialogData?.slot?.doctor}
+                    defaultValue={
+                      slotDialogData?.slot?.doctor ??
+                      (auth.user.Role.title === 'doctor' && auth.user)
+                    }
                     renderOption={(props, doctor) => (
                       <MenuItem {...props} value={doctor}>
                         {doctor.username}
@@ -252,6 +255,7 @@ export const AddAppointments = () => {
                         }}
                       />
                     )}
+                    disabled={auth.user.Role.title === 'doctor'}
                   />
                 </FormControl>
 
@@ -259,7 +263,10 @@ export const AddAppointments = () => {
                   <Autocomplete
                     options={patients}
                     required
-                    defaultValue={slotDialogData?.slot?.patient}
+                    defaultValue={
+                      slotDialogData?.slot?.patient ??
+                      (auth.user.Role.title === 'patient' && auth.user)
+                    }
                     renderOption={(props, patient) => (
                       <MenuItem {...props} value={patient}>
                         {patient.username}

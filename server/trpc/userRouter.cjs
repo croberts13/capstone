@@ -21,6 +21,9 @@ const userRouter = t.router({
     getPatients: t.procedure.use(isAuthed).query(async (otps) => {
         // return users with patient scope
         return await db.User.scope('patient').findAll();
+    }),
+    getAll: t.procedure.use(isAuthed).query(async (otps) => {
+        return await db.User.scope('withRole').findAll();
     })
 });
 exports.userRouter = userRouter;

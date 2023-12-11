@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 import Box from '@mui/material/Box';
@@ -17,9 +17,11 @@ export default function DashboardLayout({ children }) {
   const { token } = useAuth();
   const navigate = useNavigate();
 
-  if (token === null) {
-    navigate('/login');
-  }
+  useEffect(() => {
+    if (token === null) {
+      navigate('/login');
+    }
+  }, [token, navigate]);
 
   return (
     <>

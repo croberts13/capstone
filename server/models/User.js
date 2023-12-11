@@ -28,9 +28,7 @@ module.exports = (sequelize, DataTypes) => {
             // scope withRole
             this.addScope('withRole', {
                 include: [
-                    {
-                        model: models.Role
-                    }
+                    'Role'
                 ]
             });
 

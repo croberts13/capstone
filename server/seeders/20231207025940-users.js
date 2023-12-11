@@ -12,13 +12,14 @@ module.exports = {
          *   isBetaMember: false
          * }], {});
          */
-        const doctorRoleId = await db.Role.findOne({ title: 'doctor' }).then(
-            (res) => res.id,
-        );
-        
-        const patientRoleId = await db.Role.findOne({ title: 'patient' }).then(
-            (res) => res.id,
-        );
+        const doctorRoleId = await db.Role.findOne({
+            where: { title: 'doctor' }
+        }).then((res) => res.id);
+
+        const patientRoleId = await db.Role.findOne({
+            where: { title: 'patient' }
+        }).then((res) => res.id);
+
         const doctors = Array(15)
             .fill(null)
             .map((_, index) => ({
@@ -27,7 +28,7 @@ module.exports = {
                 password: db.User.hashSync('password'),
                 createdAt: new Date(),
                 updatedAt: new Date(),
-                role_id: doctorRoleId,
+                role_id: doctorRoleId
             }));
 
         const patients = Array(100)
@@ -38,12 +39,12 @@ module.exports = {
                 password: db.User.hashSync('password'),
                 createdAt: new Date(),
                 updatedAt: new Date(),
-                role_id: patientRoleId,
+                role_id: patientRoleId
             }));
 
         const users = [...doctors, ...patients];
 
-        // console.log({ users });
+        console.log({ doctorRoleId, patientRoleId, users });
         await queryInterface.bulkInsert('Users', /** @type User[] */ (users));
     },
 
@@ -55,5 +56,5 @@ module.exports = {
          * await queryInterface.bulkDelete('People', null, {});
          */
         await queryInterface.bulkDelete('User', null, {});
-    },
+    }
 };
