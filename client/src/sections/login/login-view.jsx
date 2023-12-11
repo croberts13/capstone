@@ -41,6 +41,7 @@ export default function LoginView() {
     const data = {
       email: e.target.email.value,
       password: e.target.password.value,
+      skipAuth: true,
     };
 
     loginMutation.mutateAsync(data).then((res) => {

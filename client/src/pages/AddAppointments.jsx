@@ -20,10 +20,12 @@ import {
   DialogActions,
   DialogContent,
   Autocomplete,
+  Box,
 } from '@mui/material';
 
 import { trpc } from 'src/hooks/trpc';
 import { useAuth } from 'src/store/slices/authSlice';
+import { Icon } from '@iconify/react';
 
 // ----------------------------------------------------------------------
 /**
@@ -110,6 +112,14 @@ export const AddAppointments = () => {
     console.log('slotDialogData', e.target.name, e.target.value);
   };
 
+  const nextWeek = () => {
+    setDateMarker(datefns.addWeeks(dateMarker, 1));
+  };
+
+  const prevWeek = () => {
+    setDateMarker(datefns.addWeeks(dateMarker, -1));
+  };
+
   return (
     <>
       <Helmet>
@@ -117,52 +127,70 @@ export const AddAppointments = () => {
       </Helmet>
 
       {/* const show calendar */}
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Day</TableCell>
-            <TableCell>Date</TableCell>
-            {hours.map((hour, index) => (
-              <TableCell key={index}>{hour}:00</TableCell>
-            ))}
-          </TableRow>
-        </TableHead>
+      <Stack direction="column">
+        <Box className="calendar-nav-actions">
+          <Button variant="outlined" onClick={() => prevWeek()}>
+            Prev week
+          </Button>
+          <span> </span>
+          <Button variant="outlined" onClick={() => nextWeek()}>
+            Next week
+          </Button>
 
-        <TableBody>
-          {datesThisWeekArr.map((date) => (
-            <TableRow key={date}>
-              <TableCell>{datefns.format(new Date(date), 'EEEE')}</TableCell>
-              <TableCell>{datefns.format(new Date(date), 'dd MMMM yyyy')}</TableCell>
-              {hours.map((hour) => {
-                const slots = openSlots.data?.filter(
-                  (_slot) => _slot.date === date && _slot.hour_slot === hour
-                );
-                return (
-                  <TableCell key={hour}>
-                    <Button
-                      variant="outlined"
-                      onClick={() =>
-                        loadSlotDetails({ slot: slots?.length ? slots[0] : null, hour, date })
-                      }
-                    >
-                      <Stack direction="column">
-                        {slots?.length && slots[0]?.patient_id ? (
-                          <>
-                            <span>Doctor: {slots?.length && slots[0]?.doctor_id}</span>
-                            <span>Patient_id: {slots?.length && slots[0]?.patient_id}</span>
-                          </>
-                        ) : (
-                          <span>open</span>
-                        )}
-                      </Stack>
-                    </Button>
-                  </TableCell>
-                );
-              })}
+          <Button variant="outlined" onClick={() => setDateMarker(new Date())}>
+            Today
+          </Button>
+        </Box>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Day</TableCell>
+              <TableCell>Date</TableCell>
+              {hours.map((hour, index) => (
+                <TableCell key={index}>{hour}:00</TableCell>
+              ))}
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHead>
+
+          <TableBody>
+            {datesThisWeekArr.map((date) => (
+              <TableRow key={date}>
+                <TableCell>{datefns.format(new Date(date), 'EEEE')}</TableCell>
+                <TableCell>
+                  {datefns.isSameDay(date, new Date()) && <Icon icon="mdi-calendar" />}
+                  <span>{datefns.format(new Date(date), 'dd MMMM yyyy')}</span>
+                </TableCell>
+                {hours.map((hour) => {
+                  const slots = openSlots.data?.filter(
+                    (_slot) => _slot.date === date && _slot.hour_slot === hour
+                  );
+                  return (
+                    <TableCell key={hour}>
+                      <Button
+                        variant="outlined"
+                        onClick={() =>
+                          loadSlotDetails({ slot: slots?.length ? slots[0] : null, hour, date })
+                        }
+                      >
+                        <Stack direction="column">
+                          {slots?.length && slots[0]?.patient_id ? (
+                            <>
+                              <span>Doctor: {slots?.length && slots[0]?.doctor_id}</span>
+                              <span>Patient_id: {slots?.length && slots[0]?.patient_id}</span>
+                            </>
+                          ) : (
+                            <span>open</span>
+                          )}
+                        </Stack>
+                      </Button>
+                    </TableCell>
+                  );
+                })}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </Stack>
 
       {slotDialogData && (
         <Dialog open={slotDialogData} onClose={doCloseSlotDetailsDialog}>
