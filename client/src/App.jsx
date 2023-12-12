@@ -59,7 +59,7 @@ function Root() {
       trpc.createClient({
         links: [
           httpBatchLink({
-            url: 'http://localhost:3000/trpc',
+            url: (import.meta.PROD ? '' : 'http://localhost:3000') + '/trpc',
             // You can pass any HTTP headers you wish here
             async headers(opts) {
               return {
