@@ -7,7 +7,9 @@
     "dev": "nodemon ./bin/www",
     "migrate:refresh": "npx sequelize-cli db:migrate:undo:all && npx sequelize-cli db:migrate",
     "seed": "npx sequelize-cli db:seed:all",
-    "db:refresh": "npm run migrate:refresh && npm run seed"
+    "db:refresh": "npm run migrate:refresh && npm run seed",
+    "db:pull": "heroku pg:pull DATABASE_URL pointsync2 --app pointsync",
+    "db:push": "heroku pg:reset -a pointsync && heroku pg:push pointsyn2 DATABASE_URL --app pointsync"
   },
   "dependencies": {
     "@trpc/server": "^10.44.1",
