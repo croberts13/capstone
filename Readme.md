@@ -26,3 +26,10 @@ Todos
 - [x] get logged in user appointments
 - [x] get open appoitnments
 - [x] appoitnment charts
+
+
+### Challenges working with Heroku pg
+1. dump db to sql
+2. connect to pg:psql
+3. connect to db using db name from aws (can be found by clicking new tab icon next to db resource in resources)
+4. copy db script and execute inside pg:psql

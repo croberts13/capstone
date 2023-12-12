@@ -9,7 +9,9 @@
     "seed": "npx sequelize-cli db:seed:all",
     "db:refresh": "npm run migrate:refresh && npm run seed",
     "db:pull": "heroku pg:pull DATABASE_URL pointsync2 --app pointsync",
-    "db:push": "heroku pg:reset -a pointsync && heroku pg:push pointsyn2 DATABASE_URL --app pointsync"
+    "db:push": "heroku pg:reset -a pointsync && heroku pg:push pointsyn2 DATABASE_URL --app pointsync",
+    "db:dump": " pg_dump -d pointsync2 -U postgres -W> db.sql",
+    "db:psql": "heroku pg:psql DATABASE_URL --app pointsync"
   },
   "dependencies": {
     "@trpc/server": "^10.44.1",
