@@ -15,8 +15,8 @@ const sslConf =
               ssl: true,
               dialectOptions: {
                   ssl: {
-                      require: true // Set to true if SSL is required
-                      // rejectUnauthorized: false // Set to false if you want to skip validation of SSL certificates
+                      require: true, // Set to true if SSL is required
+                      rejectUnauthorized: false // Set to false if you want to skip validation of SSL certificates
                       // You can also provide other SSL options here as needed
                   }
               }
