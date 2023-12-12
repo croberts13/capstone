@@ -8,11 +8,11 @@ import { useScrollToTop } from 'src/hooks/use-scroll-to-top';
 
 import Router from 'src/routes/sections';
 import ThemeProvider from 'src/theme';
-import { trpc } from './hooks/trpc';
 import { Provider } from 'react-redux';
 import store from 'src/store';
+import { Snackbar } from '@mui/material';
 import { useAuth } from './store/slices/authSlice';
-import { Snackbar, SnackbarContent } from '@mui/material';
+import { trpc } from './hooks/trpc';
 
 // ----------------------------------------------------------------------
 
@@ -59,7 +59,7 @@ function Root() {
       trpc.createClient({
         links: [
           httpBatchLink({
-            url: (import.meta.PROD ? '' : 'http://localhost:3000') + '/trpc',
+            url: `${import.meta.env.VITE_APP_API_URL ?? 'http://localhost:3000'}/trpc`,
             // You can pass any HTTP headers you wish here
             async headers(opts) {
               return {
