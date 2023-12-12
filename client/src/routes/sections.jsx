@@ -3,7 +3,7 @@ import { Outlet, Navigate, useRoutes } from 'react-router-dom';
 
 import Appointments from 'src/pages/appointmets';
 import DashboardLayout from 'src/layouts/dashboard';
-import { AddAppointments } from '../pages/AddAppointments';
+import { AddAppointments } from 'src/pages/AddAppointments';
 
 export const IndexPage = lazy(() => import('src/pages/app'));
 export const BlogPage = lazy(() => import('src/pages/blog'));

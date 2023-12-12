@@ -16,7 +16,7 @@ Backend: springboot/pgsql
 
 Todos
 - [x] fix sequelize connection,
-- [-x] fix auth register/login
+- [x] fix auth register/login
 - [x] fixing client navigation
 - [x] atempt basic seeder
 - [x] add models for patiets, appointments
@@ -24,5 +24,5 @@ Todos
 - [x] store logged in user in rtk
 - [x] show profile page/component and populate with profile info
 - [x] get logged in user appointments
-- [] get open appoitnments
--
+- [x] get open appoitnments
+- [x] appoitnment charts

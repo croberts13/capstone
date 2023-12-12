@@ -97,6 +97,43 @@ const appointmentRouter = router({
                     id: input
                 }
             });
+        }),
+    appointmentStats: t.procedure
+        .use(isAuthed)
+        .input(
+            z.object({
+                dates: z.array(z.string()),
+                groupByFields: z.array(
+                    z
+                        .string()
+                        .optional(
+                            'date',
+                            'reason',
+                            'title',
+                            'doctor_id',
+                            'patient_id'
+                        )
+                )
+            })
+        )
+        .query(({ input, ctx }) => {
+            // get the count of unique reasons and
+            return db.Appointment.findAll({
+                attributes: [
+                    'reason',
+                    [
+                        Sequelize.fn('COUNT', Sequelize.col('reason')),
+                        'frequency'
+                    ]
+                ],
+                where: {
+                    [ctx.user.Role.title + '_id']: ctx.user.id,
+                    date: {
+                        [Op.in]: input.dates
+                    }
+                },
+                group: input.groupByFields
+            });
         })
 });
 exports.appointmentRouter = appointmentRouter;

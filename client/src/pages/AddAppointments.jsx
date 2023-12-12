@@ -26,6 +26,7 @@ import {
 import { trpc } from 'src/hooks/trpc';
 import { useAuth } from 'src/store/slices/authSlice';
 import { Icon } from '@iconify/react';
+import { useDateRangeService } from './useDateRangeService';
 
 // ----------------------------------------------------------------------
 /**
@@ -36,9 +37,8 @@ import { Icon } from '@iconify/react';
 export const AddAppointments = () => {
   // get the open appointments with trpc
   const auth = useAuth();
-  const [dateMarker, setDateMarker] = useState(new Date());
-  // get monday and friday of this week using date-fns
-  const [monday, friday] = [datefns.startOfWeek(dateMarker), datefns.endOfWeek(dateMarker)];
+  const { monday, nextWeek, prevWeek, setTodayAsTarget, nextMonth, prevMonth } =
+    useDateRangeService();
   const [slotDialogData, setSlotDialogData] = useState(/** @type {{hour,date,slot}|null} */ (null));
   const updateAppointmentMutation = trpc.appointments.updateAppointment.useMutation();
   const createAppointmentMutation = trpc.appointments.createAppointment.useMutation();
@@ -112,14 +112,6 @@ export const AddAppointments = () => {
     console.log('slotDialogData', e.target.name, e.target.value);
   };
 
-  const nextWeek = () => {
-    setDateMarker(datefns.addWeeks(dateMarker, 1));
-  };
-
-  const prevWeek = () => {
-    setDateMarker(datefns.addWeeks(dateMarker, -1));
-  };
-
   return (
     <>
       <Helmet>
@@ -128,7 +120,13 @@ export const AddAppointments = () => {
 
       {/* const show calendar */}
       <Stack direction="column">
-        <Box className="calendar-nav-actions">
+        <Stack direction="row" className="calendar-nav-actions" spacing={2}>
+          <Button variant="outlined" onClick={() => prevMonth()}>
+            Prev Month
+          </Button>
+          <Button variant="outlined" onClick={() => nextMonth()}>
+            Next month
+          </Button>
           <Button variant="outlined" onClick={() => prevWeek()}>
             Prev week
           </Button>
@@ -137,10 +135,10 @@ export const AddAppointments = () => {
             Next week
           </Button>
 
-          <Button variant="outlined" onClick={() => setDateMarker(new Date())}>
+          <Button variant="outlined" onClick={() => setTodayAsTarget()}>
             Today
           </Button>
-        </Box>
+        </Stack>
         <Table>
           <TableHead>
             <TableRow>
