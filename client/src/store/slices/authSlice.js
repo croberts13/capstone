@@ -5,9 +5,9 @@ import { useDispatch, useSelector } from 'react-redux';
  * @satisfies {Awaited<ReturnType<import('src/hooks/trpc')['trpc']['auth']['login']['useMutation']>['mutate']>}
  * */
 const initialState = {
-  token: JSON.parse(localStorage.getItem('authState'))?.token,
-  _refreshToken: JSON.parse(localStorage.getItem('authState'))?._refreshToken,
-  user: JSON.parse(localStorage.getItem('authState'))?.user,
+  token: JSON.parse(localStorage.getItem('authState'))?.token ?? null,
+  _refreshToken: JSON.parse(localStorage.getItem('authState'))?._refreshToken ?? null,
+  user: JSON.parse(localStorage.getItem('authState'))?.user ?? null,
 };
 
 const authSlice = createSlice({

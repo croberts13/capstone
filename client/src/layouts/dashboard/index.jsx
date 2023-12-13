@@ -8,6 +8,7 @@ import Main from './main';
 import Header from './header';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from 'src/store/slices/authSlice';
+import { CircularProgress, Stack } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
@@ -22,6 +23,14 @@ export default function DashboardLayout({ children }) {
       navigate('/login');
     }
   }, [token, navigate]);
+
+  if (token === undefined) {
+    return (
+      <Stack sx={{ height: '100%' }}>
+        <CircularProgress sx={{ m: 'auto' }} />
+      </Stack>
+    );
+  }
 
   return (
     <>
