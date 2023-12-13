@@ -21,6 +21,7 @@ import {
   DialogContent,
   Autocomplete,
   Box,
+  CircularProgress,
 } from '@mui/material';
 
 import { trpc } from 'src/hooks/trpc';
@@ -47,11 +48,11 @@ export const AddAppointments = () => {
   const doctors = trpc.user.getDoctors
     .useQuery()
     ?.data // if the authed user is a doctor then use only his doctor record for doctors list else use all doctors
-    ?.filter((d) => (auth.user.Role.title === 'doctor' ? d.id === auth.user.id : true));
+    ?.filter((d) => (auth.user?.Role?.title === 'doctor' ? d.id === auth.user?.id : true));
   const patients = trpc.user.getPatients
     .useQuery()
     ?.data // if the logged in user is a patient, only use that matching patient for the patient list  else use all patients
-    ?.filter((d) => (auth.user.Role.title === 'patient' ? d.id === auth.user.id : true));
+    ?.filter((d) => (auth.user?.Role?.title === 'patient' ? d.id === auth.user?.id : true));
 
   const hours = Array(8)
     .fill(0)
@@ -111,6 +112,14 @@ export const AddAppointments = () => {
     // setTempSlotDialogData({...slotDialogData, [e.target.name]: e.target.value });
     console.log('slotDialogData', e.target.name, e.target.value);
   };
+
+  if (!auth.user) {
+    return (
+      <Stack sx={{ height: '100%' }}>
+        <CircularProgress />
+      </Stack>
+    );
+  }
 
   return (
     <>
